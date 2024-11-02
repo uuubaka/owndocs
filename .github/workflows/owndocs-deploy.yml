@@ -1,18 +1,24 @@
-name: Publish Documentation via GitHub Pages
+name: Deploy MkDocs
+
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main  # Change to your default branch name if it's not 'main'
 
 jobs:
-    build:
-        name: Deploy Documentation
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout master
-              uses: actions/checkout@v1
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-            - name: Deploy Documentation
-              uses: mhausenblas/mkdocs-deploy-gh-pages@master
-              env:
-                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'  # Use the latest version
+
+      - name: Install MkDocs
+        run: pip install mkdocs
+
+      - name: Build MkDocs
+        run: mkdocs build
