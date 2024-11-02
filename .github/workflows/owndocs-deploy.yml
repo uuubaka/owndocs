@@ -1,29 +1,18 @@
-name: Deploy MkDocs
-
+name: Publish Documentation via GitHub Pages
 on:
-  push:
-    branches:
-      - main  # Change to your default branch name if it's not 'main'
+    push:
+        branches:
+            - main
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    build:
+        name: Deploy Documentation
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout master
+              uses: actions/checkout@v1
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'  # Use the latest version
-
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      - name: Build MkDocs
-        run: mkdocs build
-
-      - name: Deploy to Cloudflare
-        run: |
-          # Add your deployment command here (e.g., using Cloudflare API or CLI)
-          echo "Deploying to Cloudflare..."  # Placeholder for actual deployment
+            - name: Deploy Documentation
+              uses: mhausenblas/mkdocs-deploy-gh-pages@master
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
